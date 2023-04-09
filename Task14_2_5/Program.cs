@@ -16,32 +16,40 @@
 
             while (true)
             {
-                var keychar = Console.ReadKey().KeyChar;
-                Console.Clear();
+                var keyChar = Console.ReadKey().KeyChar; 
+                Console.Clear();  
 
-                switch (keychar)
+
+                if (!Char.IsDigit(keyChar))
                 {
-                    case '1':
-                        ShowPage(contacts.Take(2).ToList());
-                        break;
-                    case '2':
-                        ShowPage(contacts.Skip(2).Take(2).ToList());
-                        break;
-                    case '3':
-                        ShowPage(contacts.Skip(4).Take(2).ToList());
-                        break;
-
+                    Console.WriteLine("Ошибка ввода, введите число");
                 }
-            }
+                else
+                {
+                    IEnumerable<Contact> page = null;
 
+                    switch (keyChar)
+                    {
+                        case ('1'):
+                            page = contacts.Take(2);
+                            break;
+                        case ('2'):
+                            page = contacts.Skip(2).Take(2);
+                            break;
+                        case ('3'):
+                            page = contacts.Skip(4).Take(2);
+                            break;
+                    }
 
-        }
+                    if (page == null)
+                    {
+                        Console.WriteLine($"Ошибка ввода, страницы {keyChar} не существует");
+                        continue;
+                    }
 
-        static void ShowPage(List<Contact> contacts)
-        {
-            foreach (var contact in contacts)
-            {
-                Console.WriteLine(contact.Name + " " + contact.Phone);
+                    foreach (var contact in page)
+                        Console.WriteLine(contact.Name + " " + contact.Phone);
+                }
             }
         }
     }
