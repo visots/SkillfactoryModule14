@@ -13,8 +13,8 @@
             };
 
             var youngStudents = from s in students
-                                let yearOfBirh = DateTime.Now.Year - s.Age
                                 where s.Age <= 27
+                                let yearOfBirh = DateTime.Now.Year - s.Age
                                 select new Application
                                 {
                                     Name = s.Name,
