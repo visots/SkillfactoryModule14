@@ -17,39 +17,30 @@
 
             while (true)
             {
-                var keyChar = Console.ReadKey().KeyChar;
-                Console.Clear();
+                // Читаем введенный с консоли символ
+                var input = Console.ReadKey().KeyChar;
 
+                // проверяем, число ли это
+                var parsed = Int32.TryParse(input.ToString(), out int pageNumber);
 
-                if (!Char.IsDigit(keyChar))
+                // если не соответствует критериям - показываем ошибку
+                if (!parsed || pageNumber < 1 || pageNumber > 3)
                 {
-                    Console.WriteLine("Ошибка ввода, введите число");
+                    Console.WriteLine();
+                    Console.WriteLine("Страницы не существует");
                 }
+                // если соответствует - запускаем вывод
                 else
                 {
-                    IEnumerable<Contact> page = null;
+                    // пропускаем нужное количество элементов и берем 2 для показа на странице
+                    var pageContent = phoneBook.Skip((pageNumber - 1) * 2).Take(2);
+                    Console.WriteLine();
 
-                    switch (keyChar)
-                    {
-                        case ('1'):
-                            page = phoneBook.Take(2);
-                            break;
-                        case ('2'):
-                            page = phoneBook.Skip(2).Take(2);
-                            break;
-                        case ('3'):
-                            page = phoneBook.Skip(4).Take(2);
-                            break;
-                    }
+                    // выводим результат
+                    foreach (var entry in pageContent)
+                        Console.WriteLine(entry.Name + " " + entry.LastName + ": " + entry.PhoneNumber);
 
-                    if (page == null)
-                    {
-                        Console.WriteLine($"Ошибка ввода, страницы {keyChar} не существует");
-                        continue;
-                    }
-
-                    foreach (var contact in page)
-                        Console.WriteLine(contact.Name + " " + contact.LastName +" "+ contact.PhoneNumber +" "+contact.Email);
+                    Console.WriteLine();
                 }
             }
 
